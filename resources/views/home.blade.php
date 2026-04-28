@@ -80,6 +80,7 @@
                                 <th>Usuário</th>
                                 <th>Status</th>
                                 <th>Prazo</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,6 +95,15 @@
                                         </span>
                                     </td>
                                     <td>{{ \Carbon\Carbon::parse($t->data_fim)->format('d/m/Y') }}</td>
+                                    <td>
+                                        @if(strtolower($t->status)=='pendente')
+                                            <form method="POST" action="/concluir-tarefa/{{$t->id}}">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="submit" value="Concluir" class="btn-primary-concluir">
+                                            </form>
+                                        @endif
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>

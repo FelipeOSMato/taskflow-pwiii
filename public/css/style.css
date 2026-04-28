@@ -126,7 +126,8 @@ textarea {
 }
 
 .btn-primary,
-.btn-secondary {
+.btn-secondary,
+.btn-primary-concluir {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -147,6 +148,18 @@ textarea {
 
 .btn-primary:hover {
     background: #2079ff;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.btn-primary-concluir {
+    background: #03d650;
+    color: white;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.18);
+}
+
+.btn-primary-concluir:hover {
+    background: #05b130;
     color: white;
     transform: translateY(-1px);
 }

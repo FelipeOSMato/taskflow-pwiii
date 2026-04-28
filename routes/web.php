@@ -25,6 +25,8 @@ Route::get('/enviar-tarefa','App\Http\Controllers\TarefaController@create');
 
 Route::post('/criar-tarefa','App\Http\Controllers\TarefaController@insert');
 
+Route::put('/concluir-tarefa/{id}','App\Http\Controllers\TarefaController@concluir');
+
 //Rotas dos Projetos
 
 Route::get('/projeto', 'App\Http\Controllers\ProjetoController@index');

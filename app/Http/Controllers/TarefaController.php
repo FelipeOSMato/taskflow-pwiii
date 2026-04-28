@@ -62,6 +62,14 @@ class TarefaController extends Controller
 
         return redirect('/');
     }
+    public function concluir(Request $request, string $id){
+        $tarefa = Tarefa::findOrFail($id);
+
+        $tarefa->status = "Concluída";
+
+        $tarefa->save();
+        return redirect('/');
+    }
 
     //API
     public function indexApi(){

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 28/04/2026 às 04:53
+-- Tempo de geração: 28/04/2026 às 12:58
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -213,8 +213,9 @@ CREATE TABLE `tarefa` (
 --
 
 INSERT INTO `tarefa` (`id`, `titulo`, `descricao`, `status`, `data_inicio`, `data_fim`, `projeto_id`, `created_at`, `updated_at`) VALUES
-(1, 'Contas sobre matriz', 'Faça 10 contas envolvendo matrizes matemáticas.', 'Pendente', '2026-04-27', '2026-05-29', 1, '2026-04-28 01:35:41', '2026-04-28 01:35:41'),
-(2, 'Criar um jogo sobre bactérias', 'Criar um jogo mobile sobre bactérias', 'Pendente', '2026-04-27', '2026-05-04', 2, '2026-04-28 01:42:57', '2026-04-28 01:42:57');
+(1, 'Contas sobre matriz', 'Faça 10 contas envolvendo matrizes matemáticas.', 'Concluída', '2026-04-27', '2026-05-29', 1, '2026-04-28 01:35:41', '2026-04-28 10:53:41'),
+(2, 'Criar um jogo sobre bactérias', 'Criar um jogo mobile sobre bactérias', 'Concluída', '2026-04-27', '2026-05-04', 2, '2026-04-28 01:42:57', '2026-04-28 10:57:08'),
+(4, 'Pesquisa sobre bactérias', 'Pesquisar função de células procariontes.', 'Pendente', '2026-04-28', '2026-04-30', 2, '2026-04-28 10:58:13', '2026-04-28 10:58:13');
 
 -- --------------------------------------------------------
 
@@ -388,7 +389,7 @@ ALTER TABLE `projeto`
 -- AUTO_INCREMENT de tabela `tarefa`
 --
 ALTER TABLE `tarefa`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `users`
