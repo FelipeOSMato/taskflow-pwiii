@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 07/04/2026 às 04:02
+-- Tempo de geração: 28/04/2026 às 04:53
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -24,6 +24,30 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estrutura para tabela `cache`
+--
+
+CREATE TABLE `cache` (
+  `key` varchar(255) NOT NULL,
+  `value` mediumtext NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `cache_locks`
+--
+
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) NOT NULL,
+  `owner` varchar(255) NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura para tabela `failed_jobs`
 --
 
@@ -35,6 +59,41 @@ CREATE TABLE `failed_jobs` (
   `payload` longtext NOT NULL,
   `exception` longtext NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `jobs`
+--
+
+CREATE TABLE `jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `queue` varchar(255) NOT NULL,
+  `payload` longtext NOT NULL,
+  `attempts` tinyint(3) UNSIGNED NOT NULL,
+  `reserved_at` int(10) UNSIGNED DEFAULT NULL,
+  `available_at` int(10) UNSIGNED NOT NULL,
+  `created_at` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `job_batches`
+--
+
+CREATE TABLE `job_batches` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `total_jobs` int(11) NOT NULL,
+  `pending_jobs` int(11) NOT NULL,
+  `failed_jobs` int(11) NOT NULL,
+  `failed_job_ids` longtext NOT NULL,
+  `options` mediumtext DEFAULT NULL,
+  `cancelled_at` int(11) DEFAULT NULL,
+  `created_at` int(11) NOT NULL,
+  `finished_at` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -54,9 +113,9 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2014_10_12_000000_create_users_table', 1),
-(2, '2014_10_12_100000_create_password_reset_tokens_table', 1),
-(3, '2019_08_19_000000_create_failed_jobs_table', 1),
+(1, '0001_01_01_000000_create_users_table', 1),
+(2, '0001_01_01_000001_create_cache_table', 1),
+(3, '0001_01_01_000002_create_jobs_table', 1),
 (4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
 (5, '2026_03_09_233417_create_usuario_table', 1),
 (6, '2026_03_09_233431_create_projeto_table', 1),
@@ -113,13 +172,23 @@ CREATE TABLE `projeto` (
 --
 
 INSERT INTO `projeto` (`id`, `nome`, `descricao`, `usuario_id`, `created_at`, `updated_at`) VALUES
-(1, 'Projeto de Matemática', 'Um projeto de apoio para matemática', 1, NULL, NULL),
-(2, 'Curso de inglês', 'Curso preparatório de inglês', 2, NULL, NULL),
-(9, 'Projeto de Física', 'Estudo de mecânica e movimento', 1, NULL, NULL),
-(10, 'Projeto de História', 'Pesquisa sobre a Segunda Guerra Mundial', 2, NULL, NULL),
-(11, 'Projeto de Programação', 'Sistema de gerenciamento em Laravel', 3, NULL, NULL),
-(12, 'Projeto de Biologia', 'Estudo sobre células e DNA', 4, NULL, NULL),
-(13, 'Projeto de Educação Fisica', 'Práticas sobre esportes', 5, NULL, NULL);
+(1, 'Projeto de matemática', 'Projeto de reforço para auxiliar no estudo de matemática', 1, '2026-04-28 01:35:03', '2026-04-28 01:35:03'),
+(2, 'Trabalho de biologia', 'Trabalho de biologia sobre células procariontes.', 2, '2026-04-28 01:42:22', '2026-04-28 01:42:22');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `sessions`
+--
+
+CREATE TABLE `sessions` (
+  `id` varchar(255) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  `payload` longtext NOT NULL,
+  `last_activity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -134,7 +203,6 @@ CREATE TABLE `tarefa` (
   `status` varchar(255) NOT NULL,
   `data_inicio` date NOT NULL,
   `data_fim` date NOT NULL,
-  `usuario_id` bigint(20) UNSIGNED NOT NULL,
   `projeto_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -144,12 +212,9 @@ CREATE TABLE `tarefa` (
 -- Despejando dados para a tabela `tarefa`
 --
 
-INSERT INTO `tarefa` (`id`, `titulo`, `descricao`, `status`, `data_inicio`, `data_fim`, `usuario_id`, `projeto_id`, `created_at`, `updated_at`) VALUES
-(1, 'Contas de Multiplicação', 'Fazer 10 contas de Multiplicação', 'Concluída', '2026-02-24', '2026-03-02', 1, 1, NULL, NULL),
-(2, 'Pesquisa de Inglês', 'Fazer uma pesquisa sobre os verbos no passado perfeito em inglês', 'Pendente', '2026-01-23', '2026-03-24', 2, 2, NULL, NULL),
-(4, 'Futebol', 'acordar para o treino as 8 horas da manhã', 'pendente', '2026-03-01', '2026-03-06', 1, 1, '2026-03-24 07:33:35', '2026-03-24 08:33:35'),
-(6, 'Contas sobre matriz', 'Resolver 10 exercícios sobre matriz', 'Pendente', '2026-04-06', '2026-05-12', 3, 1, '2026-04-07 01:17:32', '2026-04-07 01:17:32'),
-(7, 'Verbos no passado', 'Conjugar 10 verbos ingleses no passado', 'Pendente', '2026-04-06', '2027-10-14', 3, 2, '2026-04-07 01:54:20', '2026-04-07 01:54:20');
+INSERT INTO `tarefa` (`id`, `titulo`, `descricao`, `status`, `data_inicio`, `data_fim`, `projeto_id`, `created_at`, `updated_at`) VALUES
+(1, 'Contas sobre matriz', 'Faça 10 contas envolvendo matrizes matemáticas.', 'Pendente', '2026-04-27', '2026-05-29', 1, '2026-04-28 01:35:41', '2026-04-28 01:35:41'),
+(2, 'Criar um jogo sobre bactérias', 'Criar um jogo mobile sobre bactérias', 'Pendente', '2026-04-27', '2026-05-04', 2, '2026-04-28 01:42:57', '2026-04-28 01:42:57');
 
 -- --------------------------------------------------------
 
@@ -188,16 +253,26 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `nome`, `email`, `senha`, `created_at`, `updated_at`) VALUES
-(1, 'Fernando Rocha', 'fernandinho@gmail.com', '12345', NULL, NULL),
-(2, 'Gustavo Lanches', 'gugudograu@gmail.com', '21314', NULL, NULL),
-(3, 'Pablo Juniores', 'pabluniores@gmail.com', '31241', NULL, NULL),
-(4, 'Carlos Nobrega', 'carlinhos@gmail.com', '12345', '2026-03-31 11:11:10', '2026-03-31 11:11:10'),
-(5, 'Carlos Nobrega jr', 'carlinhosjr@gmail.com', '54321', '2026-03-31 11:17:53', '2026-03-31 11:17:53'),
-(8, 'Mateus Vitor', 'mateusVitor@gmail.com', '543212', '2026-03-31 11:23:23', '2026-03-31 11:23:23');
+(1, 'Gustavo Capas', 'gugucapas@gmail.com', '123456', '2026-04-28 01:15:37', '2026-04-28 01:15:37'),
+(2, 'Felipe de Oliveira', 'felipesilva@gmail.com', 'matosmatos', '2026-04-28 01:16:47', '2026-04-28 01:16:47');
 
 --
 -- Índices para tabelas despejadas
 --
+
+--
+-- Índices de tabela `cache`
+--
+ALTER TABLE `cache`
+  ADD PRIMARY KEY (`key`),
+  ADD KEY `cache_expiration_index` (`expiration`);
+
+--
+-- Índices de tabela `cache_locks`
+--
+ALTER TABLE `cache_locks`
+  ADD PRIMARY KEY (`key`),
+  ADD KEY `cache_locks_expiration_index` (`expiration`);
 
 --
 -- Índices de tabela `failed_jobs`
@@ -205,6 +280,19 @@ INSERT INTO `usuario` (`id`, `nome`, `email`, `senha`, `created_at`, `updated_at
 ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Índices de tabela `jobs`
+--
+ALTER TABLE `jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `jobs_queue_index` (`queue`);
+
+--
+-- Índices de tabela `job_batches`
+--
+ALTER TABLE `job_batches`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices de tabela `migrations`
@@ -234,11 +322,18 @@ ALTER TABLE `projeto`
   ADD KEY `projeto_usuario_id_foreign` (`usuario_id`);
 
 --
+-- Índices de tabela `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sessions_user_id_index` (`user_id`),
+  ADD KEY `sessions_last_activity_index` (`last_activity`);
+
+--
 -- Índices de tabela `tarefa`
 --
 ALTER TABLE `tarefa`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `tarefa_usuario_id_foreign` (`usuario_id`),
   ADD KEY `tarefa_projeto_id_foreign` (`projeto_id`);
 
 --
@@ -266,6 +361,12 @@ ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de tabela `jobs`
+--
+ALTER TABLE `jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de tabela `migrations`
 --
 ALTER TABLE `migrations`
@@ -281,13 +382,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT de tabela `projeto`
 --
 ALTER TABLE `projeto`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `tarefa`
 --
 ALTER TABLE `tarefa`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `users`
@@ -299,7 +400,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restrições para tabelas despejadas
@@ -315,8 +416,7 @@ ALTER TABLE `projeto`
 -- Restrições para tabelas `tarefa`
 --
 ALTER TABLE `tarefa`
-  ADD CONSTRAINT `tarefa_projeto_id_foreign` FOREIGN KEY (`projeto_id`) REFERENCES `projeto` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `tarefa_usuario_id_foreign` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `tarefa_projeto_id_foreign` FOREIGN KEY (`projeto_id`) REFERENCES `projeto` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
