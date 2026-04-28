@@ -18,10 +18,9 @@
             </div>
 
             <nav class="agenda-nav">
-                <a href="/">Dashboard</a>
-                <a href="/inserir-tarefa">Nova tarefa</a>
-                <a href="/usuario">Usuários</a>
-                <a href="/inserir-usuario" class="active">Novo usuário</a>
+                <a href="/">Tarefas</a>
+                <a href="/usuario" class="active">Usuários</a>
+                <a href="/projeto">Projetos</a>
             </nav>
         </aside>
 

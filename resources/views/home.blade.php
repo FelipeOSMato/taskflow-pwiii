@@ -18,10 +18,9 @@
             </div>
 
             <nav class="agenda-nav">
-                <a href="/" class="active">Dashboard</a>
-                <a href="/inserir-tarefa">Nova tarefa</a>
+                <a href="/" class="active">Tarefas</a>
                 <a href="/usuario">Usuários</a>
-                <a href="/inserir-usuario">Novo usuário</a>
+                <a href="/projeto">Projetos</a>
             </nav>
         </aside>
 
@@ -34,24 +33,23 @@
 
                 <div class="top-actions">
                     <a href="/inserir-tarefa" class="btn-primary">Nova tarefa</a>
-                    <a href="/usuario" class="btn-secondary">Usuários</a>
                 </div>
             </section>
 
             <section class="agenda-cards">
                 <div class="agenda-card">
                     <span>Total de tarefas</span>
-                    <strong>{{ count($tarefas) }}</strong>
+                    <strong>{{$tarefasTotais}}</strong>
                 </div>
 
                 <div class="agenda-card">
                     <span>Tarefas pendentes</span>
-                    <strong>{{ $tarefas->where('status', 'Pendente')->count() + $tarefas->where('status', 'pendente')->count() }}</strong>
+                    <strong>{{$tarefasPendentes}}</strong>
                 </div>
 
                 <div class="agenda-card">
                     <span>Tarefas concluídas</span>
-                    <strong>{{ $tarefas->where('status', 'Concluída')->count() + $tarefas->where('status', 'concluida')->count() }}</strong>
+                    <strong>{{ $tarefasConcluidas}}</strong>
                 </div>
             </section>
 
@@ -62,14 +60,21 @@
                         <p>Veja todas as tarefas já criadas.</p>
                     </div>
 
-                    <a href="/inserir-tarefa" class="btn-primary small-btn">Adicionar tarefa</a>
+                    <div class="form-field">
+                        <form method="GET" action="/">
+                            <select id="txProjeto" name="txfiltro" onchange="this.form.submit()">
+                                <option value="" {{request('txfiltro') == '' ? 'selected' : '' }}>Todas as Tarefas</option>
+                                <option value="concluidas" {{request('txfiltro') == 'concluidas' ? 'selected' : '' }}>Tarefas concluídas</option>
+                                <option value="pendentes" {{request('txfiltro') == 'pendentes' ? 'selected' : '' }}>Tarefas Pendentes</option>   
+                            </select>
+                        </form>
+                    </div>
                 </div>
 
                 <div class="table-wrapper">
                     <table class="agenda-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Título</th>
                                 <th>Projeto</th>
                                 <th>Usuário</th>
@@ -80,7 +85,6 @@
                         <tbody>
                             @forelse($tarefas as $t)
                                 <tr>
-                                    <td>#{{ $t->id }}</td>
                                     <td>{{ $t->titulo }}</td>
                                     <td>{{ $t->projeto_nome }}</td>
                                     <td>{{ $t->usuario_nome }}</td>

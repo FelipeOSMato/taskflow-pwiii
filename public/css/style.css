@@ -140,23 +140,15 @@ textarea {
 }
 
 .btn-primary {
-    background: #2563eb;
-    color: #ffffff;
+    background: #4c99ff;
+    color: white;
     box-shadow: 0 8px 20px rgba(37, 99, 235, 0.18);
 }
 
 .btn-primary:hover {
-    background: #1d4ed8;
+    background: #2079ff;
+    color: white;
     transform: translateY(-1px);
-}
-
-.btn-secondary {
-    background: #e2e8f0;
-    color: #0f172a;
-}
-
-.btn-secondary:hover {
-    background: #cfd9e6;
 }
 
 .small-btn {

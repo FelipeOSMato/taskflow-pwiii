@@ -1,14 +1,40 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\TarefaController;
 
-Route::get('/', [TarefaController::class, 'index']);
+//Rotas de usuario
 
-Route::get('/usuario', [UsuarioController::class, 'index']);
-Route::get('/inserir-usuario', [UsuarioController::class, 'create']);
-Route::post('/criar-usuario', [UsuarioController::class, 'store']);
+Route::get('/inserir-usuario',function(){
+    return view('insertUsuario');
+});
 
-Route::get('/inserir-tarefa', [TarefaController::class, 'create']);
-Route::post('/criar-tarefa', [TarefaController::class, 'store']);
+Route::get('/usuario','App\Http\Controllers\UsuarioController@index');
+
+Route::get('/enviar-usuario','App\Http\Controllers\UsuarioController@create');
+
+Route::post('/criar-usuario','App\Http\Controllers\UsuarioController@insert');
+
+
+//Rotas das tarefas
+
+Route::get('/inserir-tarefa','App\Http\Controllers\TarefaController@tarefasSelect');
+
+Route::get('/','App\Http\Controllers\TarefaController@index');
+
+Route::get('/enviar-tarefa','App\Http\Controllers\TarefaController@create');
+
+Route::post('/criar-tarefa','App\Http\Controllers\TarefaController@insert');
+
+//Rotas dos Projetos
+
+Route::get('/projeto', 'App\Http\Controllers\ProjetoController@index');
+
+Route::get('/enviar-projeto','App\Http\Controllers\ProjetoController@create');
+
+Route::post('/criar-projeto','App\Http\Controllers\ProjetoController@insert');
+
+Route::get('/inserir-projeto','App\Http\Controllers\ProjetoController@projeto_select');
+
+
+
+

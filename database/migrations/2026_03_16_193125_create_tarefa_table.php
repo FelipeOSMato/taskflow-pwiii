@@ -18,9 +18,7 @@ return new class extends Migration
             $table->string('status');
             $table->date('data_inicio');
             $table->date('data_fim');
-            $table->unsignedBigInteger('usuario_id');
             $table->unsignedBigInteger('projeto_id');
-            $table->foreign('usuario_id')->references('id')->on('usuario')->onDelete('cascade');
             $table->foreign('projeto_id')->references('id')->on('projeto')->onDelete('cascade');
             $table->timestamps();
         });

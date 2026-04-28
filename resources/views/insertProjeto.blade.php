@@ -18,10 +18,9 @@
             </div>
 
             <nav class="agenda-nav">
-                <a href="/" class="active">Tarefas</a>
+                <a href="/">Tarefas</a>
                 <a href="/usuario">Usuários</a>
-                <a href="/projeto">Projetos</a>
-                
+                <a href="/projeto" class="active">Projetos</a>                
             </nav>
         </aside>
 
@@ -29,39 +28,35 @@
             <section class="agenda-panel form-page">
                 <div class="panel-top">
                     <div>
-                        <h3>Nova tarefa</h3>
-                        <p>Cadastre uma nova tarefa na agenda.</p>
+                        <h3>Novo Projeto</h3>
+                        <p>Cadastre um novo projeto na agenda.</p>
                     </div>
                 </div>
 
-                <form action="/criar-tarefa" method="POST" class="agenda-form">
+                <form action="/criar-projeto" method="POST" class="agenda-form">
                     @csrf
 
                     <div class="form-grid">
                         <div class="form-field full-width">
-                            <label for="txNome">Título</label>
-                            <input type="text" id="txNome" name="txNome" placeholder="Digite o título da tarefa" required>
+                            <label for="txNome">Titulo do Projeto</label>
+                            <input type="text" id="txNome" name="txNome" placeholder="Digite o título do Projeto" required>
                         </div>
 
                         <div class="form-field full-width">
                             <label for="txDesc">Descrição</label>
-                            <textarea id="txDesc" name="txDesc" placeholder="Digite a descrição da tarefa" required></textarea>
+                            <textarea id="txDesc" name="txDesc" placeholder="Digite a descrição do Projeto" required></textarea>
                         </div>
 
                         <div class="form-field">
-                            <label for="txProjeto">Projeto</label>
-                            <select id="txProjeto" name="txProjeto" required>
-                                <option value="">Selecionar Projeto</option>
-                                @foreach($projeto as $p)
-                                    <option value="{{ $p->id }}">{{ $p->nome }}</option>
+                            <label for="txUser">Usuario</label>
+                            <select id="txUser" name="txUser" required>
+                                <option value="">Selecionar Usuario</option>
+                                @foreach($usuario as $u)
+                                    <option value="{{ $u->id }}">{{ $u->nome }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="form-field">
-                            <label for="txData">Prazo</label>
-                            <input type="date" id="txData" name="txData" required>
-                        </div>
                     </div>
 
                     <div class="form-actions">

@@ -19,8 +19,8 @@
 
             <nav class="agenda-nav">
                 <a href="/">Tarefas</a>
-                <a href="/usuario" class="active">Usuários</a>
-                <a href="/projeto">Projetos</a>
+                <a href="/usuario">Usuários</a>
+                <a href="/projeto" class="active">Projetos</a>
             </nav>
         </aside>
 
@@ -32,25 +32,16 @@
                 </div>
 
                 <div class="top-actions">
-                    <a href="/inserir-usuario" class="btn-primary">Novo usuário</a>
+                    <a href="/inserir-projeto" class="btn-primary">Novo Projeto</a>
                 </div>
             </section>
 
             <section class="agenda-cards">
                 <div class="agenda-card">
-                    <span>Total de usuários</span>
-                    <strong>{{($usuarioCount)}}</strong>
+                    <span>Total de Projetos</span>
+                    <strong>{{$projetoCount}}</strong>
                 </div>
 
-                <div class="agenda-card">
-                    <span>Status</span>
-                    <strong>Ativo</strong>
-                </div>
-
-                <div class="agenda-card">
-                    <span>Painel</span>
-                    <strong>Online</strong>
-                </div>
             </section>
 
             <section class="agenda-panel">
@@ -66,18 +57,20 @@
                         <thead>
                             <tr>
                                 <th>Nome</th>
-                                <th>Email</th>
+                                <th>Descrição</th>
+                                <th>Nome do Usuario</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($usuario as $u)
+                            @forelse($projeto as $p)
                                 <tr>
-                                    <td>{{ $u->nome }}</td>
-                                    <td>{{ $u->email }}</td>
+                                    <td>{{ $p->nome }}</td>
+                                    <td>{{ $p->descricao }}</td>
+                                    <td>{{ $p->usuario_nome}}</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="3">Nenhum usuário cadastrado ainda.</td>
+                                    <td colspan="3">Nenhum projeto criado ainda.</td>
                                 </tr>
                             @endforelse
                         </tbody>
