@@ -27,8 +27,8 @@
         <main class="agenda-main">
             <section class="hero-box">
                 <div>
-                    <h2>Usuários</h2>
-                    <p>Visualize os usuários cadastrados no sistema.</p>
+                    <h2>Projetos</h2>
+                    <p>Visualize os Projetos criados no sistema.</p>
                 </div>
 
                 <div class="top-actions">
