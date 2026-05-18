@@ -47,7 +47,7 @@
             <section class="agenda-panel">
                 <div class="panel-top">
                     <div>
-                        <h3>Lista de usuários</h3>
+                        <h3>Lista de Projetos</h3>
                         <p>Gerencie os cadastros existentes.</p>
                     </div>
                 </div>
