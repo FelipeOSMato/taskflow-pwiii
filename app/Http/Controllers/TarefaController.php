@@ -8,6 +8,8 @@ use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use function Laravel\Prompts\select;
+
 class TarefaController extends Controller
 {
     public function index(Request $request){
@@ -73,9 +75,22 @@ class TarefaController extends Controller
 
     //API
     public function indexApi(){
-        $tarefa = Tarefa::all();
+        $tarefa = Tarefa::join('projeto','tarefa.projeto_id','=','projeto.id')
+            ->select('tarefa.*', 'projeto.nome as projeto_nome')
+            ->get();
 
         return $tarefa;
+    }
+    public function countsApi(){
+        $tarefaCounts = Tarefa::select('tarefa.titulo as tarefas_totais')->count();
+        $tarefasConcluidas = Tarefa::where('status', '=', 'Concluída')->count();
+        $tarefasPendentes = Tarefa::where('status', '=', 'Pendente')->count();
+
+        return response()->json([
+            'tarefas_totais' => $tarefaCounts,
+            'tarefas_concluidas' => $tarefasConcluidas,
+            'tarefas_pendentes' => $tarefasPendentes
+        ]);
     }
 
     public function insertAPI(Request $request){

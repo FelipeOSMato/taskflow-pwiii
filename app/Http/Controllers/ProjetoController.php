@@ -45,7 +45,9 @@ class ProjetoController extends Controller
     //API 
 
     public function indexAPI(){
-        $projeto = Projeto::all();
+        $projeto = Projeto::join('usuario','projeto.usuario_id','=','usuario.id')
+        ->select('projeto.*', 'usuario.nome as usuario_nome')
+        ->get();
 
         return $projeto;
     }

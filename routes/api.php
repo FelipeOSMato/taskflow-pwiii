@@ -21,14 +21,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //Tarefas
 
 Route::get('/tarefa', 'App\Http\Controllers\TarefaController@indexAPI');
-Route::post('/tarefa', 'App\Http\Controllers\TarefaController@insertAPI');
+Route::get('/count-tarefa', 'App\Http\Controllers\TarefaController@countsApi');
+Route::post('/criar-tarefa', 'App\Http\Controllers\TarefaController@insertAPI');
 
 //Usuarios
 
 Route::get('/usuario', 'App\Http\Controllers\UsuarioController@indexAPI');
-Route::post('/usuario', 'App\Http\Controllers\UsuarioController@insertAPI');
+Route::post('/criar-usuario', 'App\Http\Controllers\UsuarioController@insertAPI');
 
 //Projeto
 
 Route::get('/projeto', 'App\Http\Controllers\ProjetoController@indexAPI');
-Route::post('/projeto', 'App\Http\Controllers\ProjetoController@insertAPI');
+Route::post('/criar-projeto', 'App\Http\Controllers\ProjetoController@insertAPI');

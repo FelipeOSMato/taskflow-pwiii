@@ -64,7 +64,7 @@
                         <form method="GET" action="/">
                             <select id="txProjeto" name="txfiltro" onchange="this.form.submit()">
                                 <option value="" {{request('txfiltro') == '' ? 'selected' : '' }}>Todas as Tarefas</option>
-                                <option value="concluidas" {{request('txfiltro') == 'concluidas' ? 'selected' : '' }}>Tarefas concluídas</option>
+                                <option value="concluidas" {{request('txfiltro') == 'concluidas' ? 'selected' : '' }}>Tarefas Concluídas</option>
                                 <option value="pendentes" {{request('txfiltro') == 'pendentes' ? 'selected' : '' }}>Tarefas Pendentes</option>   
                             </select>
                         </form>
