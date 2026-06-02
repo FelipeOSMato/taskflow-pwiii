@@ -127,7 +127,8 @@ textarea {
 
 .btn-primary,
 .btn-secondary,
-.btn-primary-concluir {
+.btn-primary-concluir,
+.btn-primary-desabilitado {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -162,6 +163,11 @@ textarea {
     background: #05b130;
     color: white;
     transform: translateY(-1px);
+}
+.btn-primary-desabilitado {
+    background: #969595;
+    cursor:default;
+    color: rgb(202, 202, 202);
 }
 
 .small-btn {

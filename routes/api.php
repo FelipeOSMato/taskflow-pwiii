@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/tarefa', 'App\Http\Controllers\TarefaController@indexAPI');
 Route::get('/count-tarefa', 'App\Http\Controllers\TarefaController@countsApi');
 Route::post('/criar-tarefa', 'App\Http\Controllers\TarefaController@insertAPI');
+Route::put('/atualizar-tarefa/{id}','App\Http\Controllers\TarefaController@atualizarAPI');
 
 //Usuarios
 

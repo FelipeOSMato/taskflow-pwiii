@@ -102,6 +102,8 @@
                                                 @method('PUT')
                                                 <input type="submit" value="Concluir" class="btn-primary-concluir">
                                             </form>
+                                        @else
+                                            <input type="button" value="Concluir" class="btn-primary-desabilitado" disabled>
                                         @endif
                                     </td>
                                 </tr>

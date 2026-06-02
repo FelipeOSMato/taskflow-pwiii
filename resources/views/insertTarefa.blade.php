@@ -60,7 +60,7 @@
 
                         <div class="form-field">
                             <label for="txData">Prazo</label>
-                            <input type="date" id="txData" name="txData" required>
+                            <input type="date" id="txData" name="txData" required value="2026-06-02">
                         </div>
                     </div>
 
