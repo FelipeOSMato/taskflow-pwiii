@@ -147,6 +147,15 @@ class TarefaController extends Controller
 
         $tarefa->save();
 
+        $projeto = Projeto::findOrFail($request->projeto_id);
+
+        $contarTarefas = Tarefa::where('projeto_id', '=', $projeto->id)->count();
+
+        $projeto->quantiaTarefas= $contarTarefas;
+
+        $projeto->save();
+
+
         return response()->json($tarefa, 201);
     }
     public function atualizarAPI(Request $request, string $id){

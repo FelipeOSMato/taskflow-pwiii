@@ -93,9 +93,18 @@ class ProjetoController extends Controller
 
         $projeto->nome = $request ->nome;
         $projeto->descricao = $request ->descricao;
+        $projeto->quantiaTarefas = 0;
         $projeto->usuario_id = $request ->usuario_id;
 
         $projeto->save();
+
+        $usuario = Usuario::findOrFail($request->usuario_id);
+
+        $quantiaProjeto = Projeto::where('usuario_id', '=', $usuario->id)->count();
+
+        $usuario->quantiaProjetos = $quantiaProjeto;
+
+        $usuario->save();
 
         return response()->json($projeto, 201);
     }

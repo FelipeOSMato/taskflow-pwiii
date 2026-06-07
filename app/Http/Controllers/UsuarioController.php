@@ -84,6 +84,8 @@ class UsuarioController extends Controller
         $usuario->nome = $request ->nome;
         $usuario->email = $request ->email;
         $usuario->senha = $request ->senha;
+        $usuario->status = 'Ativo';
+        $usuario->quantiaProjetos = 0;
 
         $usuario->save();
 
