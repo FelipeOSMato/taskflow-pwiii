@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 28/04/2026 às 12:58
+-- Tempo de geração: 07/06/2026 às 23:53
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -162,6 +162,7 @@ CREATE TABLE `projeto` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `nome` varchar(255) NOT NULL,
   `descricao` varchar(255) NOT NULL,
+  `quantiaTarefas` int(11) NOT NULL,
   `usuario_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -171,9 +172,9 @@ CREATE TABLE `projeto` (
 -- Despejando dados para a tabela `projeto`
 --
 
-INSERT INTO `projeto` (`id`, `nome`, `descricao`, `usuario_id`, `created_at`, `updated_at`) VALUES
-(1, 'Projeto de matemática', 'Projeto de reforço para auxiliar no estudo de matemática', 1, '2026-04-28 01:35:03', '2026-04-28 01:35:03'),
-(2, 'Trabalho de biologia', 'Trabalho de biologia sobre células procariontes.', 2, '2026-04-28 01:42:22', '2026-04-28 01:42:22');
+INSERT INTO `projeto` (`id`, `nome`, `descricao`, `quantiaTarefas`, `usuario_id`, `created_at`, `updated_at`) VALUES
+(5, 'Projeto de matemática', 'Projeto de reforço para a matéria de matemática', 1, 6, '2026-06-07 20:01:13', '2026-06-07 21:17:44'),
+(6, 'Projeto de biologia', 'Criar um jogo utilizando Javascript sobre células procariontes.', 1, 5, '2026-06-07 20:02:29', '2026-06-07 21:51:19');
 
 -- --------------------------------------------------------
 
@@ -213,9 +214,8 @@ CREATE TABLE `tarefa` (
 --
 
 INSERT INTO `tarefa` (`id`, `titulo`, `descricao`, `status`, `data_inicio`, `data_fim`, `projeto_id`, `created_at`, `updated_at`) VALUES
-(1, 'Contas sobre matriz', 'Faça 10 contas envolvendo matrizes matemáticas.', 'Concluída', '2026-04-27', '2026-05-29', 1, '2026-04-28 01:35:41', '2026-04-28 10:53:41'),
-(2, 'Criar um jogo sobre bactérias', 'Criar um jogo mobile sobre bactérias', 'Concluída', '2026-04-27', '2026-05-04', 2, '2026-04-28 01:42:57', '2026-04-28 10:57:08'),
-(4, 'Pesquisa sobre bactérias', 'Pesquisar função de células procariontes.', 'Pendente', '2026-04-28', '2026-04-30', 2, '2026-04-28 10:58:13', '2026-04-28 10:58:13');
+(10, 'Problemas sobre matriz', 'Resolva 5 problemas sobre matriz matemática.', 'Pendente', '2026-06-07', '2026-06-12', 5, '2026-06-07 20:03:03', '2026-06-07 20:40:40'),
+(12, 'Entregar o jogo', 'Enviar prints das telas do jogo de biologia.', 'Concluída', '2026-06-07', '2026-06-02', 6, '2026-06-07 20:04:22', '2026-06-07 21:12:37');
 
 -- --------------------------------------------------------
 
@@ -245,6 +245,8 @@ CREATE TABLE `usuario` (
   `nome` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `senha` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `quantiaProjetos` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -253,9 +255,9 @@ CREATE TABLE `usuario` (
 -- Despejando dados para a tabela `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `nome`, `email`, `senha`, `created_at`, `updated_at`) VALUES
-(1, 'Gustavo Capas', 'gugucapas@gmail.com', '123456', '2026-04-28 01:15:37', '2026-04-28 01:15:37'),
-(2, 'Felipe de Oliveira', 'felipesilva@gmail.com', 'matosmatos', '2026-04-28 01:16:47', '2026-04-28 01:16:47');
+INSERT INTO `usuario` (`id`, `nome`, `email`, `senha`, `status`, `quantiaProjetos`, `created_at`, `updated_at`) VALUES
+(5, 'Felipe de Oliveira', 'felipeosilva0812@gmail.com', 'MatosMato', 'Ativo', 1, '2026-06-07 20:00:25', '2026-06-07 21:40:41'),
+(6, 'Gustavo Capas', 'gugucapas@gmail.com', '12332121', 'Ativo', 1, '2026-06-07 20:00:44', '2026-06-07 20:01:13');
 
 --
 -- Índices para tabelas despejadas
@@ -389,7 +391,7 @@ ALTER TABLE `projeto`
 -- AUTO_INCREMENT de tabela `tarefa`
 --
 ALTER TABLE `tarefa`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de tabela `users`
@@ -401,7 +403,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restrições para tabelas despejadas
