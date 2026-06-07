@@ -11,6 +11,7 @@ class Projeto extends Model
     protected $fillable = [
         'nome',
         'descricao',
+        'quantiaTarefas',
         'usuario_id'
     ];
 }

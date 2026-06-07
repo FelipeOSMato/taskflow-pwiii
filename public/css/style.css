@@ -82,10 +82,15 @@ textarea {
     transition: 0.25s ease;
 }
 
+.agenda-nav a.active{
+    cursor:default;
+}
+
 .agenda-nav a:hover,
 .agenda-nav a.active {
     background: #dbeafe;
     color: #1d4ed8;
+    text-decoration: none;
 }
 
 .agenda-main {
@@ -127,7 +132,10 @@ textarea {
 
 .btn-primary,
 .btn-secondary,
+.btn-primary-editar,
 .btn-primary-concluir,
+.btn-primary-excluir,
+.btn-primary-desativar,
 .btn-primary-desabilitado {
     display: inline-flex;
     align-items: center;
@@ -140,7 +148,6 @@ textarea {
     cursor: pointer;
     transition: 0.25s ease;
 }
-
 .btn-primary {
     background: #4c99ff;
     color: white;
@@ -151,12 +158,12 @@ textarea {
     background: #2079ff;
     color: white;
     transform: translateY(-1px);
+    text-decoration: none;
 }
 
 .btn-primary-concluir {
     background: #03d650;
     color: white;
-    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.18);
 }
 
 .btn-primary-concluir:hover {
@@ -164,10 +171,63 @@ textarea {
     color: white;
     transform: translateY(-1px);
 }
+.btn-primary-concluir:focus {
+    outline: none;
+}
+
+.btn-primary-editar{
+    background: #4c99ff;
+    color: white;
+}
+.btn-primary-editar:hover {
+    background: #2079ff;
+    color: white;
+    transform: translateY(-1px);
+}
+.btn-primary-editar:focus {
+    outline: none;
+}
+
+.btn-primary-excluir {
+    background: #d60303;
+    color: white;
+}
+.btn-primary-excluir:hover {
+    background: #b10505;
+    color: white;
+    transform: translateY(-1px);
+}
+.btn-primary-excluir:focus {
+    outline: none;
+}
+.btn-primary-desativar{
+    background: #e59705;
+    color: white;
+}
+.btn-primary-desativar:hover {
+    background: #c68205;
+    color: white;
+    transform: translateY(-1px);
+}
+.btn-primary-desativar:focus {
+    outline: none;
+}
+.btn-secondary:hover {
+    background: #474747;
+    color: white;
+    transform: translateY(-1px);
+    text-decoration: none;
+}
+.btn-secondary:focus {
+    outline: none;
+}
 .btn-primary-desabilitado {
     background: #969595;
     cursor:default;
     color: rgb(202, 202, 202);
+}
+.close:focus{
+    outline: none;
 }
 
 .small-btn {
@@ -238,7 +298,8 @@ textarea {
 .table-wrapper {
     width: 100%;
     overflow-x: auto;
-    border-radius: 16px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
 }
 
 .agenda-table {
@@ -248,7 +309,7 @@ textarea {
 }
 
 .agenda-table th {
-    text-align: left;
+    text-align: center;
     padding: 15px 16px;
     background: #f8fafc;
     font-size: 0.78rem;
@@ -263,6 +324,8 @@ textarea {
     border-bottom: 1px solid #edf2f7;
     color: #1e293b;
     font-size: 0.96rem;
+    border-left: 0.1vh solid #edf2f7;
+    border-right: 0.1vh solid #edf2f7;
 }
 
 .agenda-table tr:hover {
@@ -277,6 +340,7 @@ textarea {
     border-radius: 999px;
     font-size: 0.75rem;
     font-weight: 800;
+    width: 100%;
 }
 
 .status-pendente {
@@ -333,6 +397,11 @@ textarea {
 .form-field input,
 .form-field select {
     height: 52px;
+}
+.form-field select option{
+    background-color: #f8fafc;
+    color: #1e293b;
+    font-weight: 600;
 }
 
 .form-field textarea {
