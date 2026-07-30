@@ -77,6 +77,14 @@ class UsuarioController extends Controller
 
         return $usuario;
     }
+    //Listar o id de um usuario específico
+    public function listarIDAPI(string $nome){
+        $usuario = Usuario::select('usuario.id')
+            ->where('usuario.nome', 'LIKE', "%{$nome}%")
+            ->get();
+
+        return $usuario;
+    }
 
     public function insertAPI(Request $request){
         $usuario = new Usuario();

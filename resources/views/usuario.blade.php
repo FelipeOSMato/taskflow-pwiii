@@ -130,7 +130,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Editar Tarefa</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Editar Usuário</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                         </button>
@@ -141,7 +141,7 @@
                                             @method('PUT')
                                                 <div class="form-field">
                                                     <label for="titulo" class="col-form-label">Nome:</label>
-                                                    <input type="text" id="txNome" name="txNome" placeholder="Digite o título da tarefa" value="{{$u->nome}}" required class="form-control">
+                                                    <input type="text" id="txNome" name="txNome" placeholder="Digite o nome do usuário" value="{{$u->nome}}" required class="form-control">
                                                 </div>
                                                 <div class="form-field">
                                                     <label for="descricao" class="col-form-label">Email:</label>
@@ -149,7 +149,7 @@
                                                     </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" class="btn-primary">Salvar tarefa</button>
+                                                    <button type="submit" class="btn-primary">Salvar usuário</button>
                                                 </div>                                        
                                         </form>
                                     </div>

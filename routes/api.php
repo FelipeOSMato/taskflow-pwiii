@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/tarefa', 'App\Http\Controllers\TarefaController@indexAPI');
 Route::get('/count-tarefa', 'App\Http\Controllers\TarefaController@countsApi');
+Route::get('/listar-tarefa/{titulo}', 'App\Http\Controllers\TarefaController@tarefaEspAPI');
 Route::post('/criar-tarefa', 'App\Http\Controllers\TarefaController@insertAPI');
 Route::put('/atualizar-tarefa/{id}','App\Http\Controllers\TarefaController@atualizarAPI');
 Route::delete('/excluir-tarefa/{id}','App\Http\Controllers\TarefaController@excluirAPI');
@@ -29,6 +30,7 @@ Route::delete('/excluir-tarefa/{id}','App\Http\Controllers\TarefaController@excl
 //Usuarios
 
 Route::get('/usuario', 'App\Http\Controllers\UsuarioController@indexAPI');
+Route::get('/listar-id-usuario/{nome}', 'App\Http\Controllers\UsuarioController@listarIDAPI');
 Route::post('/criar-usuario', 'App\Http\Controllers\UsuarioController@insertAPI');
 Route::put('/atualizar-usuario/{id}','App\Http\Controllers\UsuarioController@atualizarAPI');
 Route::delete('/excluir-usuario/{id}','App\Http\Controllers\UsuarioController@excluirAPI');

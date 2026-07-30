@@ -123,6 +123,17 @@ class TarefaController extends Controller
 
         return $tarefa;
     }
+
+    //API de listar uma tarefa específica
+    public function tarefaEspAPI(String $titulo){
+        $tarefa = Tarefa::join('projeto','tarefa.projeto_id','=','projeto.id')
+            ->select('tarefa.*', 'projeto.nome as projeto_nome')
+            ->where('tarefa.titulo','=',$titulo)
+            ->get();
+
+        return $tarefa;
+    }
+
     public function countsApi(){
         $tarefaCounts = Tarefa::select('tarefa.titulo as tarefas_totais')->count();
         $tarefasConcluidas = Tarefa::where('status', '=', 'Concluída')->count();
