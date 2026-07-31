@@ -33,6 +33,8 @@ Route::get('/usuario', 'App\Http\Controllers\UsuarioController@indexAPI');
 Route::get('/listar-id-usuario/{nome}', 'App\Http\Controllers\UsuarioController@listarIDAPI');
 Route::post('/criar-usuario', 'App\Http\Controllers\UsuarioController@insertAPI');
 Route::put('/atualizar-usuario/{id}','App\Http\Controllers\UsuarioController@atualizarAPI');
+Route::put('/concluir-tarefa/{id}','App\Http\Controllers\TarefaController@concluirAPI');
+Route::put('/desfazer-tarefa/{id}','App\Http\Controllers\TarefaController@desfazerAPI');
 Route::delete('/excluir-usuario/{id}','App\Http\Controllers\UsuarioController@excluirAPI');
 
 //Projeto

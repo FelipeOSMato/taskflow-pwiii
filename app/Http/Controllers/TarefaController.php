@@ -133,7 +133,6 @@ class TarefaController extends Controller
 
         return $tarefa;
     }
-
     public function countsApi(){
         $tarefaCounts = Tarefa::select('tarefa.titulo as tarefas_totais')->count();
         $tarefasConcluidas = Tarefa::where('status', '=', 'Concluída')->count();
@@ -184,6 +183,26 @@ class TarefaController extends Controller
 
         return response()->json($tarefa, 201);
     }
+    //API para concluir uma tarefa
+    public function concluirAPI(Request $request, string $id){
+        $tarefa = Tarefa::findOrFail($id);
+
+        $tarefa->status = "Concluída";
+
+        $tarefa->save();
+        return response()->json($tarefa, 201);
+    }
+    //API para desfazer uma tarefa
+    public function desfazerAPI(Request $request, string $id){
+        $tarefa = Tarefa::findOrFail($id);
+
+        $tarefa->status = "Pendente";
+
+        $tarefa->save();
+        return response()->json($tarefa, 201);
+    }
+
+
     public function excluirAPI(Request $request, string $id){
         $tarefa = Tarefa::findOrFail($id);
         $projeto = Projeto::findOrFail($tarefa->projeto_id);
