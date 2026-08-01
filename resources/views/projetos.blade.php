@@ -91,7 +91,7 @@
                                                 Excluir
                                             </button>
                                         @else
-                                            <input type="button" value="Excluir" class="btn-primary-desabilitado" disabled>
+                                            <button type="button" class="btn-primary-desabilitado" disabled>Excluir</button>
                                         @endif
                                     </td>
                                 </tr>

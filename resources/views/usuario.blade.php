@@ -71,7 +71,8 @@
                                 <th>Status</th>
                                 <th>Quantidade de Projetos</th>
                                 <th></th>
-                                <th></th>                                
+                                <th></th>       
+                                <th></th>                         
                             </tr>
                         </thead>
                         <tbody>
@@ -121,7 +122,7 @@
                                                 Excluir
                                             </button>
                                         @else
-                                            <input type="button" value="excluir" class="btn-primary-desabilitado" disabled>
+                                            <button type="button" class="btn-primary-desabilitado" disabled>Excluir</button>
                                         @endif
                                     </td>
                                 </tr>

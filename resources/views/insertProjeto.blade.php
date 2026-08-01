@@ -62,7 +62,7 @@
 
                     <div class="form-actions">
                         <a href="/" class="btn-secondary">Cancelar</a>
-                        <button type="submit" class="btn-primary">Salvar tarefa</button>
+                        <button type="submit" class="btn-primary">Cadastrar Projeto</button>
                     </div>
                 </form>
             </section>
