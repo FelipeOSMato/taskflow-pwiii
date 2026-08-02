@@ -25,6 +25,8 @@ Route::get('/count-tarefa', 'App\Http\Controllers\TarefaController@countsApi');
 Route::get('/listar-tarefa/{titulo}', 'App\Http\Controllers\TarefaController@tarefaEspAPI');
 Route::post('/criar-tarefa', 'App\Http\Controllers\TarefaController@insertAPI');
 Route::put('/atualizar-tarefa/{id}','App\Http\Controllers\TarefaController@atualizarAPI');
+Route::put('/concluir-tarefa/{id}','App\Http\Controllers\TarefaController@concluirAPI');
+Route::put('/desfazer-tarefa/{id}','App\Http\Controllers\TarefaController@desfazerAPI');
 Route::delete('/excluir-tarefa/{id}','App\Http\Controllers\TarefaController@excluirAPI');
 
 //Usuarios
@@ -32,9 +34,10 @@ Route::delete('/excluir-tarefa/{id}','App\Http\Controllers\TarefaController@excl
 Route::get('/usuario', 'App\Http\Controllers\UsuarioController@indexAPI');
 Route::get('/listar-id-usuario/{nome}', 'App\Http\Controllers\UsuarioController@listarIDAPI');
 Route::post('/criar-usuario', 'App\Http\Controllers\UsuarioController@insertAPI');
+Route::put('/ativar-usuario/{id}','App\Http\Controllers\UsuarioController@ativarAPI');
+Route::put('/desativar-usuario/{id}','App\Http\Controllers\UsuarioController@desativarAPI');
 Route::put('/atualizar-usuario/{id}','App\Http\Controllers\UsuarioController@atualizarAPI');
-Route::put('/concluir-tarefa/{id}','App\Http\Controllers\TarefaController@concluirAPI');
-Route::put('/desfazer-tarefa/{id}','App\Http\Controllers\TarefaController@desfazerAPI');
+
 Route::delete('/excluir-usuario/{id}','App\Http\Controllers\UsuarioController@excluirAPI');
 
 //Projeto

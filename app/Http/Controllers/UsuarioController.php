@@ -117,12 +117,28 @@ class UsuarioController extends Controller
         $validarDados = $request -> validate([
             'nome' => 'min:3',
             'email' => 'max:200',
-            'status' => 'in:Ativo,Inativo'
         ]);
         $usuario = Usuario::findOrFail($id);
 
         $usuario->update($validarDados);
 
+        return response()->json($usuario, 201);
+
+    }
+    public function desativarAPI(Request $request, string $id){
+        $usuario = Usuario::findOrFail($id);
+
+        $usuario->status = "Inativo";
+
+        $usuario->save();
+        return response()->json($usuario, 201);
+    }
+    public function ativarAPI(Request $request, string $id){
+        $usuario = Usuario::findOrFail($id);
+
+        $usuario->status = "Ativo";
+
+        $usuario->save();
         return response()->json($usuario, 201);
     }
 }

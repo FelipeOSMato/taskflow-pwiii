@@ -172,12 +172,10 @@ class TarefaController extends Controller
         $validarDados = $request -> validate([
             'titulo' => 'min:3',
             'descricao' => 'max:200',
-            'status' => 'in:Pendente,Concluída'
         ]);
         $tarefa = Tarefa::findOrFail($id);
 
         $tarefa->data_fim = $request -> data_fim;
-        $tarefa->projeto_id = $request -> projeto_id;
 
         $tarefa->update($validarDados);
 
