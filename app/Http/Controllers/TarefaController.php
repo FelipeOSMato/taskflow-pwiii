@@ -16,35 +16,38 @@ class TarefaController extends Controller
     public function index(Request $request){
 
         $tarefas = Tarefa::join('projeto','tarefa.projeto_id','=','projeto.id')
-        ->select('tarefa.*', 'projeto.nome as projeto_nome')->get();
+        ->join('usuario', 'projeto.usuario_id', '=', 'usuario.id')
+        ->select('tarefa.*', 'projeto.nome as projeto_nome', 'usuario.nome as usuario_nome');
 
-        $filtrar = $request->txfiltro;
+        if($request->filled('txFiltroStatus')){
 
-        if($filtrar == 'pendentes'){
-            $tarefas = Tarefa::join('projeto','tarefa.projeto_id','=','projeto.id')
-            ->join('usuario', 'projeto.usuario_id', '=', 'usuario.id')
-            ->select('tarefa.*', 'projeto.nome as projeto_nome', 'usuario.nome as usuario_nome')
-            ->where('tarefa.status','=','Pendente')
-            ->get();    
-        }elseif($filtrar == 'concluidas'){
-            $tarefas = Tarefa::join('projeto','tarefa.projeto_id','=','projeto.id')
-            ->join('usuario', 'projeto.usuario_id', '=', 'usuario.id')
-            ->select('tarefa.*', 'projeto.nome as projeto_nome', 'usuario.nome as usuario_nome')
-            ->where('tarefa.status','=','Concluída')
-            ->get();
-        }else{
-            $tarefas = Tarefa::join('projeto','tarefa.projeto_id','=','projeto.id')
-            ->join('usuario', 'projeto.usuario_id', '=', 'usuario.id')
-            ->select('tarefa.*', 'projeto.nome as projeto_nome', 'usuario.nome as usuario_nome')
-            ->get();
+            $filtrarStatus=$request->txFiltroStatus;
+
+            if($filtrarStatus == 'pendentes'){
+                $tarefas->where('tarefa.status','=','Pendente');
+            }elseif($filtrarStatus == 'concluidas'){
+                $tarefas->where('tarefa.status','=','Concluída');
+            }
         }
+        if($request->filled('txData')){
+            $data = $request->txData;
+            $tarefas->where('tarefa.data_fim','=', $data);
+        }
+        if($request->filled('txDataPrimeira') && $request->filled('txDataSegunda')){
+            $dataPrimeira = $request->txDataPrimeira;
+            $dataSegunda = $request->txDataSegunda;
+
+            $tarefas->whereBetween('tarefa.data_fim',[$dataPrimeira, $dataSegunda]);
+        }
+
+        $tarefas = $tarefas->get();
+
         $tarefasTotais = Tarefa::select('tarefa.titulo')->count();
         $tarefasConcluidas = Tarefa::where('status','=','Concluída')->count();
         $tarefasPendentes = Tarefa::where('status','=','Pendente')->count();
         
         return view('home', compact('tarefas', 'tarefasTotais', 'tarefasPendentes', 'tarefasConcluidas'));
     }
-
     public function tarefasSelect(){
         $projeto = Projeto::all();
         return view('insertTarefa', compact('projeto'));

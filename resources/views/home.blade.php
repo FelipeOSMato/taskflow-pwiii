@@ -61,13 +61,61 @@
                         <p>Veja todas as tarefas já criadas.</p>
                     </div>
 
-                    <div class="form-field">
-                        <form method="GET" action="/">
-                            <select id="txProjeto" name="txfiltro" onchange="this.form.submit()">
-                                <option value="" {{request('txfiltro') == '' ? 'selected' : '' }}>Todas as Tarefas</option>
-                                <option value="concluidas" {{request('txfiltro') == 'concluidas' ? 'selected' : '' }}>Tarefas Concluídas</option>
-                                <option value="pendentes" {{request('txfiltro') == 'pendentes' ? 'selected' : '' }}>Tarefas Pendentes</option>   
-                            </select>
+                    <div class="filtros">
+                        
+                        <label for="txFiltro">Filtrar por:</label>
+
+                        <form action="/" method="$_GET">
+                            <div class="form-field">
+                                <select name="selecionarFiltro" id="selecionarFiltro" onchange="this.form.submit()">
+
+                                    <option value="status"
+                                        {{ request('selecionarFiltro') == 'status' ? 'selected' : '' }}>
+                                        Status
+                                    </option>
+
+                                    <option value="data"
+                                        {{ request('selecionarFiltro') == 'data' ? 'selected' : '' }}>
+                                        Data final
+                                    </option>
+
+                                    <option value="entreData"
+                                        {{ request('selecionarFiltro') == 'entreData' ? 'selected' : '' }}>
+                                        Entre datas
+                                    </option>
+                                </select>
+                            </div>
+                        </form>
+                            
+                        <form method="GET" action="/" id="filtroStatus" style="display:none">
+                            <div class="form-field">
+                                <input type="hidden" name="selecionarFiltro" value="status">
+                                <select id="txStatus" name="txFiltroStatus" onchange="this.form.submit()">
+                                    <option value="" {{request('txFiltroStatus') == '' ? 'selected' : '' }}>Todas as Tarefas</option>
+                                    <option value="concluidas" {{request('txFiltroStatus') == 'concluidas' ? 'selected' : '' }}>Tarefas Concluídas</option>
+                                    <option value="pendentes" {{request('txFiltroStatus') == 'pendentes' ? 'selected' : '' }}>Tarefas Pendentes</option>   
+                                </select>
+                            </div>
+                        </form>
+
+                        <form method="GET" action="/" id="filtroData" style="display:none">
+                            <div class="form-field">
+                                <input type="hidden" name="selecionarFiltro" value="data">
+                                <label for="txData">Data:</label>
+                                <input type="date" id="txData" name="txData" required value="{{request('txData', date('Y-m-d'))}}">
+                                <button type="submit" class="btn-primary">Filtrar</button>
+                            </div>
+                        </form>
+
+                        <form method="GET" action="/" class="entreDataForm" id="filtroEntreData" style="display:none">
+                            <div class="form-field">
+                                <input type="hidden" name="selecionarFiltro" value="entreData" >
+                                <label for="txDataPrimeira">Data inicial:</label>
+                                <input type="date" id="txDataPrimeira" name="txDataPrimeira" required value="{{request('txDataPrimeira', now()->subDay()->format('Y-m-d')) }}" max= "{{request('txDataSegunda', date('Y-m-d'))}}">
+                                <label for="txDataSegunda">Data final:</label>
+                                <input type="date" id="txDataSegunda" name="txDataSegunda" required value="{{request('txDataSegunda', date('Y-m-d'))}}">
+                                <button type="submit" class="btn-primary">Filtrar</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -204,6 +252,7 @@
             </section>
         </main>
     </div>
+    <script src="{{asset('js/filtro.js')}}"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
