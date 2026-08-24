@@ -367,8 +367,8 @@ textarea {
 
 .form-field {
     display: flex;
-    flex-direction: row;
-        align-items: center;
+    flex-direction: column;
+        align-items: left;
     gap: 8px;
 }
 
@@ -417,8 +417,57 @@ textarea {
     border-color: #60a5fa;
     box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
 }
+.form-filtro {
+    display: flex;
+    flex-direction: row;
+        align-items: center;
+    gap: 8px;
+}
+
+.form-filtro label {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #334155;
+}
+
+.form-filtro input,
+.form-filtro select,
+.form-filtro textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 0.96rem;
+    transition: 0.2s ease;
+}
+
+.form-filtro input,
+.form-filtro select {
+    height: 52px;
+}
+.form-filtro select option{
+    background-color: #f8fafc;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.form-filtro textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.form-filtro input:focus,
+.form-filtro select:focus,
+.form-filtro textarea:focus {
+    outline: none;
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
+}
 .filtros {
     display: flex;
+    flex-direction: row;
     align-items: center;
     gap: 12px;
 }

@@ -66,7 +66,7 @@
                         <label for="txFiltro">Filtrar por:</label>
 
                         <form action="/" method="$_GET">
-                            <div class="form-field">
+                            <div class="form-filtro">
                                 <select name="selecionarFiltro" id="selecionarFiltro" onchange="this.form.submit()">
 
                                     <option value="status"
@@ -99,7 +99,7 @@
                         </form>
 
                         <form method="GET" action="/" id="filtroData" style="display:none">
-                            <div class="form-field">
+                            <div class="form-filtro">
                                 <input type="hidden" name="selecionarFiltro" value="data">
                                 <label for="txData">Data:</label>
                                 <input type="date" id="txData" name="txData" required value="{{request('txData', date('Y-m-d'))}}">
@@ -108,7 +108,7 @@
                         </form>
 
                         <form method="GET" action="/" class="entreDataForm" id="filtroEntreData" style="display:none">
-                            <div class="form-field">
+                            <div class="form-filtro">
                                 <input type="hidden" name="selecionarFiltro" value="entreData" >
                                 <label for="txDataPrimeira">Data inicial:</label>
                                 <input type="date" id="txDataPrimeira" name="txDataPrimeira" required value="{{request('txDataPrimeira', now()->subDay()->format('Y-m-d')) }}" max= "{{request('txDataSegunda', date('Y-m-d'))}}">
