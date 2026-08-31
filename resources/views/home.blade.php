@@ -35,6 +35,11 @@
                 <div class="top-actions">
                     <a href="/inserir-tarefa" class="btn-primary">Nova tarefa</a>
                 </div>
+
+                <div class="auth-actions">
+                    <a href="/login" class="btn-primary">Entrar</a>
+                    <a href="/register" class="btn-secondary">Criar conta</a>
+                </div>
             </section>
 
             <section class="agenda-cards">

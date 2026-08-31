@@ -2,6 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 
+// Rota de login
+Route::get('/login', function () {
+    return view('login');
+});
+
+// Rota de cadastro
+Route::get('/register', function () {
+    return view('register');
+});
+
 //Rotas de usuario
 
 Route::get('/inserir-usuario',function(){
