@@ -7,35 +7,50 @@ use Illuminate\Http\Request;
 use App\Models\Projeto;
 use App\Models\Tarefa;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
 
 class ProjetoController extends Controller
 {
-    public function index(){
-        $projeto = Projeto::join('usuario', 'projeto.usuario_id', '=', 'usuario.id')
-        ->select('projeto.*', 'usuario.nome as usuario_nome')->get();
+    public function index()
+    {
+        $usuarioLogado = Auth::user();
 
-        $projetoCount = Projeto::select('projeto.*')->count();
+        $projeto = Projeto::join('usuario', 'projeto.usuario_id', '=', 'usuario.id')
+            ->select('projeto.*', 'usuario.nome as usuario_nome');
+
+        // Se não for administrador, mostra somente os próprios projetos
+        if ($usuarioLogado->email != 'adm@gmail.com') {
+            $projeto->where('projeto.usuario_id', '=', $usuarioLogado->id);
+        }
+
+        $projeto = $projeto->get();
+
+        $projetoCount = $projeto->count();
 
         return view('projetos', compact('projeto', 'projetoCount'));
     }
 
-    public function create(){
+
+    public function create()
+    {
         return view('projetos');
     }
 
-    public function projeto_select(){
+    public function projeto_select()
+    {
         $usuario = Usuario::all();
 
         return view('insertProjeto', compact('usuario'));
     }
 
-    public function insert(Request $request){
+    public function insert(Request $request)
+    {
         $projeto = new Projeto();
-        
-        $projeto->nome = $request ->txNome;
-        $projeto->descricao = $request ->txDesc;
+
+        $projeto->nome = $request->txNome;
+        $projeto->descricao = $request->txDesc;
         $projeto->quantiaTarefas = 0;
-        $projeto->usuario_id = $request ->txUser;
+        $projeto->usuario_id = $request->txUser;
         $projeto->created_at = date('Y-m-d H:i:s');
         $projeto->updated_at = date('Y-m-d H:i:s');
 
@@ -50,20 +65,21 @@ class ProjetoController extends Controller
         $usuario->save();
 
         return redirect('/projeto');
-        
     }
-    public function editar(Request $request, string $id){
+    public function editar(Request $request, string $id)
+    {
         $projeto = Projeto::findOrFail($id);
 
-        $projeto->nome = $request -> txNome;
-        $projeto->descricao = $request ->txDesc;
+        $projeto->nome = $request->txNome;
+        $projeto->descricao = $request->txDesc;
 
 
         $projeto->save();
 
         return redirect('/projeto');
     }
-    public function excluir(Request $request, string $id){
+    public function excluir(Request $request, string $id)
+    {
         $projeto = Projeto::findOrFail($id);
         $usuario = Usuario::findOrFail($projeto->usuario_id);
 
@@ -71,7 +87,7 @@ class ProjetoController extends Controller
 
         $contarProjetos = Projeto::where('usuario_id', '=', $usuario->id)->count();
 
-        $usuario->quantiaProjetos= $contarProjetos;
+        $usuario->quantiaProjetos = $contarProjetos;
 
         $usuario->save();
 
@@ -80,21 +96,23 @@ class ProjetoController extends Controller
 
     //API 
 
-    public function indexAPI(){
-        $projeto = Projeto::join('usuario','projeto.usuario_id','=','usuario.id')
-        ->select('projeto.*', 'usuario.nome as usuario_nome')
-        ->get();
+    public function indexAPI()
+    {
+        $projeto = Projeto::join('usuario', 'projeto.usuario_id', '=', 'usuario.id')
+            ->select('projeto.*', 'usuario.nome as usuario_nome')
+            ->get();
 
         return $projeto;
     }
 
-    public function insertAPI(Request $request){
+    public function insertAPI(Request $request)
+    {
         $projeto = new Projeto();
 
-        $projeto->nome = $request ->nome;
-        $projeto->descricao = $request ->descricao;
+        $projeto->nome = $request->nome;
+        $projeto->descricao = $request->descricao;
         $projeto->quantiaTarefas = 0;
-        $projeto->usuario_id = $request ->usuario_id;
+        $projeto->usuario_id = $request->usuario_id;
 
         $projeto->save();
 
@@ -108,31 +126,33 @@ class ProjetoController extends Controller
 
         return response()->json($projeto, 201);
     }
-    public function excluirAPI(Request $request, string $id){
+    public function excluirAPI(Request $request, string $id)
+    {
         $projeto = Projeto::findOrFail($id);
         $usuario = Usuario::findOrFail($projeto->usuario_id);
 
-        $deletado=Projeto::where('id', '=', $id)->where('quantiaTarefas', '=', 0)->delete();
+        $deletado = Projeto::where('id', '=', $id)->where('quantiaTarefas', '=', 0)->delete();
 
         $contarProjetos = Projeto::where('usuario_id', '=', $usuario->id)->count();
 
-        $usuario->quantiaProjetos= $contarProjetos;
+        $usuario->quantiaProjetos = $contarProjetos;
 
         $usuario->save();
 
-        if($deletado>0){
+        if ($deletado > 0) {
             return response()->json([
-                'message'=> 'Projeto excluído com sucesso',
-                'code'=> 200
+                'message' => 'Projeto excluído com sucesso',
+                'code' => 200
             ]);
-        }else{
+        } else {
             return response()->json([
-                'Message'=> 'Não é possível excluir um projeto com tarefas vinculadas!'
+                'Message' => 'Não é possível excluir um projeto com tarefas vinculadas!'
             ]);
         }
     }
-    public function atualizarAPI(Request $request, string $id){
-        $validarDados = $request -> validate([
+    public function atualizarAPI(Request $request, string $id)
+    {
+        $validarDados = $request->validate([
             'nome' => 'min:3',
             'descricao' => 'max:200',
         ]);
@@ -144,5 +164,3 @@ class ProjetoController extends Controller
         return response()->json($projeto, 201);
     }
 }
-
-

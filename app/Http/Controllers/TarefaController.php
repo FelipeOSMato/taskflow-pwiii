@@ -8,59 +8,115 @@ use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Psy\Command\ListCommand\PropertyEnumerator;
+use Illuminate\Support\Facades\Auth;
 
 use function Laravel\Prompts\select;
 
 class TarefaController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
+        $tarefas = Tarefa::join('projeto', 'tarefa.projeto_id', '=', 'projeto.id')
+            ->join('usuario', 'projeto.usuario_id', '=', 'usuario.id')
+            ->select(
+                'tarefa.*',
+                'projeto.nome as projeto_nome',
+                'usuario.nome as usuario_nome'
+            );
 
-        $tarefas = Tarefa::join('projeto','tarefa.projeto_id','=','projeto.id')
-        ->join('usuario', 'projeto.usuario_id', '=', 'usuario.id')
-        ->select('tarefa.*', 'projeto.nome as projeto_nome', 'usuario.nome as usuario_nome');
+        // Se NÃO for ADM, mostra somente as tarefas dos projetos dele
+        if (Auth::user()->email !== 'adm@gmail.com') {
+            $tarefas->where('projeto.usuario_id', Auth::id());
+        }
 
-        if($request->filled('txFiltroStatus')){
+        // Filtro por status
+        if ($request->filled('txFiltroStatus')) {
 
-            $filtrarStatus=$request->txFiltroStatus;
+            $filtrarStatus = $request->txFiltroStatus;
 
-            if($filtrarStatus == 'pendentes'){
-                $tarefas->where('tarefa.status','=','Pendente');
-            }elseif($filtrarStatus == 'concluidas'){
-                $tarefas->where('tarefa.status','=','Concluída');
+            if ($filtrarStatus == 'pendentes') {
+                $tarefas->where('tarefa.status', '=', 'Pendente');
+            } elseif ($filtrarStatus == 'concluidas') {
+                $tarefas->where('tarefa.status', '=', 'Concluída');
             }
         }
-        if($request->filled('txData')){
+
+        // Filtro por uma data
+        if ($request->filled('txData')) {
             $data = $request->txData;
-            $tarefas->where('tarefa.data_fim','=', $data);
+
+            $tarefas->where('tarefa.data_fim', '=', $data);
         }
-        if($request->filled('txDataPrimeira') && $request->filled('txDataSegunda')){
+
+        // Filtro entre datas
+        if ($request->filled('txDataPrimeira') && $request->filled('txDataSegunda')) {
+
             $dataPrimeira = $request->txDataPrimeira;
             $dataSegunda = $request->txDataSegunda;
 
-            $tarefas->whereBetween('tarefa.data_fim',[$dataPrimeira, $dataSegunda]);
+            $tarefas->whereBetween(
+                'tarefa.data_fim',
+                [$dataPrimeira, $dataSegunda]
+            );
         }
 
         $tarefas = $tarefas->get();
 
-        $tarefasTotais = Tarefa::select('tarefa.titulo')->count();
-        $tarefasConcluidas = Tarefa::where('status','=','Concluída')->count();
-        $tarefasPendentes = Tarefa::where('status','=','Pendente')->count();
-        
-        return view('home', compact('tarefas', 'tarefasTotais', 'tarefasPendentes', 'tarefasConcluidas'));
+        // Contadores
+        if (Auth::user()->email === 'adm@gmail.com') {
+
+            $tarefasTotais = Tarefa::count();
+
+            $tarefasConcluidas = Tarefa::where(
+                'status',
+                '=',
+                'Concluída'
+            )->count();
+
+            $tarefasPendentes = Tarefa::where(
+                'status',
+                '=',
+                'Pendente'
+            )->count();
+        } else {
+
+            $tarefasTotais = $tarefas->count();
+
+            $tarefasConcluidas = $tarefas
+                ->where('status', 'Concluída')
+                ->count();
+
+            $tarefasPendentes = $tarefas
+                ->where('status', 'Pendente')
+                ->count();
+        }
+
+        return view(
+            'home',
+            compact(
+                'tarefas',
+                'tarefasTotais',
+                'tarefasPendentes',
+                'tarefasConcluidas'
+            )
+        );
     }
-    public function tarefasSelect(){
+
+    public function tarefasSelect()
+    {
         $projeto = Projeto::all();
         return view('insertTarefa', compact('projeto'));
     }
-    public function insert(Request $request){
+    public function insert(Request $request)
+    {
         $tarefa = new Tarefa();
 
-        $tarefa->titulo = $request ->txNome;
-        $tarefa->descricao = $request ->txDesc;
+        $tarefa->titulo = $request->txNome;
+        $tarefa->descricao = $request->txDesc;
         $tarefa->status = "Pendente";
         $tarefa->data_inicio = date('Y-m-d H:i:s');
-        $tarefa->data_fim = $request -> txData;
-        $tarefa->projeto_id = $request -> txProjeto;
+        $tarefa->data_fim = $request->txData;
+        $tarefa->projeto_id = $request->txProjeto;
         $tarefa->created_at = date('Y-m-d H:i:s');
         $tarefa->updated_at = date('Y-m-d H:i:s');
 
@@ -70,13 +126,14 @@ class TarefaController extends Controller
 
         $contarTarefas = Tarefa::where('projeto_id', '=', $projeto->id)->count();
 
-        $projeto->quantiaTarefas= $contarTarefas;
+        $projeto->quantiaTarefas = $contarTarefas;
 
         $projeto->save();
 
         return redirect('/');
     }
-    public function concluir(Request $request, string $id){
+    public function concluir(Request $request, string $id)
+    {
         $tarefa = Tarefa::findOrFail($id);
 
         $tarefa->status = "Concluída";
@@ -84,7 +141,8 @@ class TarefaController extends Controller
         $tarefa->save();
         return redirect('/');
     }
-    public function desfazer(Request $request, string $id){
+    public function desfazer(Request $request, string $id)
+    {
         $tarefa = Tarefa::findOrFail($id);
 
         $tarefa->status = "Pendente";
@@ -92,18 +150,20 @@ class TarefaController extends Controller
         $tarefa->save();
         return redirect('/');
     }
-    public function editar(Request $request, string $id){
+    public function editar(Request $request, string $id)
+    {
         $tarefa = Tarefa::findOrFail($id);
 
-        $tarefa->titulo = $request -> txNome;
-        $tarefa->descricao = $request ->txDesc;
-        $tarefa->data_fim = $request -> txData;
+        $tarefa->titulo = $request->txNome;
+        $tarefa->descricao = $request->txDesc;
+        $tarefa->data_fim = $request->txData;
 
         $tarefa->save();
 
         return redirect('/');
     }
-    public function excluir(Request $request, string $id){
+    public function excluir(Request $request, string $id)
+    {
         $tarefa = Tarefa::findOrFail($id);
         $projeto = Projeto::findOrFail($tarefa->projeto_id);
 
@@ -111,7 +171,7 @@ class TarefaController extends Controller
 
         $contarTarefas = Tarefa::where('projeto_id', '=', $projeto->id)->count();
 
-        $projeto->quantiaTarefas= $contarTarefas;
+        $projeto->quantiaTarefas = $contarTarefas;
 
         $projeto->save();
 
@@ -119,8 +179,9 @@ class TarefaController extends Controller
     }
 
     //API
-    public function indexApi(){
-        $tarefa = Tarefa::join('projeto','tarefa.projeto_id','=','projeto.id')
+    public function indexApi()
+    {
+        $tarefa = Tarefa::join('projeto', 'tarefa.projeto_id', '=', 'projeto.id')
             ->select('tarefa.*', 'projeto.nome as projeto_nome')
             ->get();
 
@@ -128,15 +189,17 @@ class TarefaController extends Controller
     }
 
     //API de listar uma tarefa específica
-    public function tarefaEspAPI(String $titulo){
-        $tarefa = Tarefa::join('projeto','tarefa.projeto_id','=','projeto.id')
+    public function tarefaEspAPI(String $titulo)
+    {
+        $tarefa = Tarefa::join('projeto', 'tarefa.projeto_id', '=', 'projeto.id')
             ->select('tarefa.*', 'projeto.nome as projeto_nome')
-            ->where('tarefa.titulo','=',$titulo)
+            ->where('tarefa.titulo', '=', $titulo)
             ->get();
 
         return $tarefa;
     }
-    public function countsApi(){
+    public function countsApi()
+    {
         $tarefaCounts = Tarefa::select('tarefa.titulo as tarefas_totais')->count();
         $tarefasConcluidas = Tarefa::where('status', '=', 'Concluída')->count();
         $tarefasPendentes = Tarefa::where('status', '=', 'Pendente')->count();
@@ -148,15 +211,16 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function insertAPI(Request $request){
+    public function insertAPI(Request $request)
+    {
         $tarefa = new Tarefa();
 
-        $tarefa->titulo = $request ->titulo;
-        $tarefa->descricao = $request ->descricao;
+        $tarefa->titulo = $request->titulo;
+        $tarefa->descricao = $request->descricao;
         $tarefa->status = "Pendente";
         $tarefa->data_inicio = date('Y-m-d H:i:s');
-        $tarefa->data_fim = $request -> dataFinal;
-        $tarefa->projeto_id = $request -> projeto_id;
+        $tarefa->data_fim = $request->dataFinal;
+        $tarefa->projeto_id = $request->projeto_id;
 
         $tarefa->save();
 
@@ -164,28 +228,30 @@ class TarefaController extends Controller
 
         $contarTarefas = Tarefa::where('projeto_id', '=', $projeto->id)->count();
 
-        $projeto->quantiaTarefas= $contarTarefas;
+        $projeto->quantiaTarefas = $contarTarefas;
 
         $projeto->save();
 
 
         return response()->json($tarefa, 201);
     }
-    public function atualizarAPI(Request $request, string $id){
-        $validarDados = $request -> validate([
+    public function atualizarAPI(Request $request, string $id)
+    {
+        $validarDados = $request->validate([
             'titulo' => 'min:3',
             'descricao' => 'max:200',
         ]);
         $tarefa = Tarefa::findOrFail($id);
 
-        $tarefa->data_fim = $request -> data_fim;
+        $tarefa->data_fim = $request->data_fim;
 
         $tarefa->update($validarDados);
 
         return response()->json($tarefa, 201);
     }
     //API para concluir uma tarefa
-    public function concluirAPI(Request $request, string $id){
+    public function concluirAPI(Request $request, string $id)
+    {
         $tarefa = Tarefa::findOrFail($id);
 
         $tarefa->status = "Concluída";
@@ -194,7 +260,8 @@ class TarefaController extends Controller
         return response()->json($tarefa, 201);
     }
     //API para desfazer uma tarefa
-    public function desfazerAPI(Request $request, string $id){
+    public function desfazerAPI(Request $request, string $id)
+    {
         $tarefa = Tarefa::findOrFail($id);
 
         $tarefa->status = "Pendente";
@@ -204,7 +271,8 @@ class TarefaController extends Controller
     }
 
 
-    public function excluirAPI(Request $request, string $id){
+    public function excluirAPI(Request $request, string $id)
+    {
         $tarefa = Tarefa::findOrFail($id);
         $projeto = Projeto::findOrFail($tarefa->projeto_id);
 
@@ -212,14 +280,13 @@ class TarefaController extends Controller
 
         $contarTarefas = Tarefa::where('projeto_id', '=', $projeto->id)->count();
 
-        $projeto->quantiaTarefas= $contarTarefas;
+        $projeto->quantiaTarefas = $contarTarefas;
 
         $projeto->save();
-        
+
         return response()->json([
-            'message'=>"Tarefa excluída",
-            'code'=>200
+            'message' => "Tarefa excluída",
+            'code' => 200
         ]);
     }
 }
-
